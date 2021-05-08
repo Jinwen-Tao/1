@@ -1,0 +1,398 @@
+---
+title: "Investigation on the ability of the laundry machine to remove oil and grape stains"
+author: |
+  | Last name: Tao
+  | First name: Jinwen
+  | Student ID: 1004707301
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+#install the package in order to create cube plot
+#install.packages("FrF2")
+library("FrF2")
+```
+
+# PART 1 --- Description 
+
+### Objective and Experimental Design 
+I noticed that many laundry products are designed to remove the dirt on the clothes. During the cleaning process, people would like to add extra surfactant or lubricating ingredients to clean the dirty spots on the clothes more efficiently. However, the washing machine sometimes fails to remove the oil and grape stains on my clothes and I am wondering whether it is related to the amount of laundry detergent, bleach or fabric softener I added. 
+
+In this experiment, I am interested in exploring the cleaning ability of the laundry machine to remove the oil and grape stains on clothes. In particular, I developed a procedure to investigate how the amount of detergent, bleach and fabric softener could affect the performance of washing machines. In deciding a design, a $2^3$ factorial design is applied which consists of three factors----- amount of detergent (½ cup, ¼ cup), bleach (none, 1 cup) and fabric softener (not used, used) and each factor contains two levels. Thus, my objective of this experiment is to identify how these three factors will influence the ability of the washing machine to remove the oil and grape stains on the clothes.
+
+Specifically, I designed a replicated 2^3 factorial design with Factor A as the amount of detergent (first variable), Factor B as bleach (second variable) and Factor C as fabric softener (third variable) and each factor has two levels. In the first level, ½ cup of detergent, no bleach and no fabric softener are added to the washing machine. In the second level, ¼ cup of detergent, 1 cup of bleach and fabric softener are added to the washing machine. Table 1 below listed all the factors and their two levels. 
+
+Table 1: Factors and their levels 
+
+$\begin{tabular}{|c|c|c|}
+    \hline
+    Factors & Level 1 & Level 2 \\
+    \hline
+    Factor A : Amount of detergent & 1/2 cup (-1) & 1/4 cup (+1) \\
+    \hline
+    Factor B: bleach & None (-1) & 1 cup (+1) \\
+    \hline
+    Factor C: fabric softener & Not used (-1) & Used  (+1) \\
+    \hline
+    \end{tabular}$ 
+
+### Null hypothesis
+In this experiment, the first null hypothesis of factor A (amount of detergent) is there is no difference in the ability of removing oil and grape stains on clothes by adding ½ cup of detergent and ¼ cup of detergent. This means the ability to remove oil and grape stains by adding ½ cup of detergent and ¼ cup of detergent is the same. The second null hypothesis of factor B (bleach) is there is no difference in the ability of removing oil and grape stains on clothes by not adding bleach and adding 1 cup of bleach. For factor C (fabric softener), we have our null hypothesis that there is no difference in the ability of removing oil and grape stains on clothes by not using fabric softener and using fabric softener. 
+
+### Procedures & Lessons
+The experimental unit is a single piece of fabric with oil and grape stains on it. Since the experimental units take on all possible combinations of two levels across all three factors, we have 8 possible combinations in total. This is a replicated experiment and thus we have 16 experimental units since we need to conduct this experiment twice to reduce the random error. 
+
+In order to conduct this experiment, we first need to prepare 8 pieces of fabrics with the same amount of oil and grape stains on them (Step 1). Then we put the fabric with oil and grape stains into the washing machine (Step 2). We wash one fabric with oil and grape stains each time with a specific amount of detergent, bleach and fabric softener and record their level of cleanliness in the table (Step 3). 
+
+The cleanliness of the clothes is measured by 1-to-10 score scale, where 1 is the dirtiest clothes after washing and 10 is the cleanest clothes after washing. The score will reflect the ability of removing the oil and grape stains on clothes. I randomly chose 16 of my friends and the scores were given by these 16 participants since we needed to make sure every y is independent from each other. Every participant would receive a piece of fabric and give a score of cleanliness. For instance, In Order 3, we added ½ cup of detergent, 1 cup of bleach and no fabric softener into the washing machine and one of the participants gave a score on the level of cleanliness of washed clothes. 
+
+We conducted the experiments eight times for the first round and recorded their score in the table (Step 4).Then we replicated the experiment with 8 pieces of fabrics with the same amount of oil and grape stains on them just like the first round and recorded the data in the table (Step 5 ). After that, we analyzed our recorded data and investigated how the amount of detergent, bleach and fabric softener would affect the ability of the washing machine to remove the oil and grape stains (Step 6 ).
+
+By conducting this experiment, I hope to learn how to conduct a proper factorial design by using the knowledge from both lectures and other research papers. After comparing the cleanliness of clothes after washing, this experiment tells me the efficiency of detergent, bleach and fabric softener in removing the stains on clothes. Thus, in the next time of cleaning my clothes with oil or grape stains, I hope I could efficiently clean them by adding the proper amount of detergent, bleach and fabric softener. 
+
+\newpage
+# PART 2 --- Data analysis
+
+## I.Visualization
+
+### Data
+
+In Table 2, from order 1-8, we conducted the experiment for the first round and from order 9 to 16 was the replicated experiment. The scores of cleanliness are recorded in the table from 1-to-10 score scale,where 1 is the dirtiest clothes after washing and 10 is the cleanest clothes after washing. 
+
+Table 2: Experimental data and cleanliness score
+
+$\begin{tabular}{|c|c|c|c|c|}
+\hline
+Experimental Order & Amount of detergent & Amount of Bleach & Amount of Fabric softener & Score \\
+\hline
+1 & ½ cup (-1) & None (-1) & Not used (-1) & 2 \\
+\hline
+2 & ½ cup (-1) & None (-1) & Used (+1) & 3 \\
+\hline
+3 & ½ cup (-1) & 1 cup (+1) & Not used (-1) & 7 \\
+\hline
+4 & ½ cup (-1) & 1 cup (+1) & Used (+1) & 5 \\
+\hline
+5 & ¼ cup (+1) & None (-1) & Not used (-1) & 6 \\
+\hline
+6 & ¼ cup (+1) & None (-1) & Used (+1)  & 6 \\
+\hline
+7 & ¼ cup (+1) & 1 cup (+1) & Not used (-1) & 9 \\
+\hline
+8 & ¼ cup (+1) & 1 cup (+1) & Used (+1) & 10 \\
+\hline
+9 & ½ cup (-1) & None (-1) & Not used (-1) & 2 \\
+\hline
+10 & ½ cup (-1) & None (-1) & Used (+1) & 2 \\
+\hline
+11 & ½ cup (-1) & 1 cup (+1) & Not used (-1) & 6 \\
+\hline
+12 & ½ cup (-1) & 1 cup (+1) & Used (+1) & 6 \\
+\hline
+13 & ¼ cup (+1) & None (-1) & Not used (-1) & 6  \\
+\hline
+14 &  ¼ cup (+1) & None (-1) & Used (+1)  & 5 \\
+\hline
+15 & ¼ cup (+1) & 1 cup (+1) & Not used (-1) & 9 \\
+\hline
+16 & ¼ cup (+1) & 1 cup (+1) & Used (+1) & 9 \\
+\hline
+\end{tabular}$
+
+### Regression model
+
+This is the output of Regression model:
+```{r}
+#import the data 
+Detergent = c(-1,-1,-1,-1,1,1,1,1,-1,-1,-1,-1,1,1,1,1)
+Bleach = c(-1,-1,1,1,-1,-1,1,1,-1,-1,1,1,-1,-1,1,1)
+Fabric_softener = c(-1,1,-1,1,-1,1,-1,1,-1,1,-1,1,-1,1,-1,1)
+Score = c(2,3,7,5,6,6,9,10,2,2,6,6,6,5,9,9)
+#create a linear model
+linear_model<-lm(Score ~ Detergent*Bleach*Fabric_softener)
+summary(linear_model)
+```
+
+This is the Regression model of this $2^3$ factorial design:
+
+${y_i} = 5.8125 +  1.6875x_{i1}+ 1.8125x_{i2} - 0.0625x_{i3} - 0.0625x_{i1}x_{i2} + 0.0625x_{i1}x_{i3} - 0.0625x_{i2}x_{i3} + 0.3125x_{i1}x_{i2}x_{i3} + {\epsilon}_i$
+
+where $y_i$ is the yield from ith run, $x_{i1}$ is the amount of detergent from ith run, $x_{i2}$ is the amount of bleach from ith run and $x_{i3}$ is the amount of fabric softener from ith run.
+
+$x_{i1}$ = 1 if 1/2 cup of detergent is added and $x_{i1}$ = 0 if 1/4 cup of detergent is added.
+
+$x_{i2}$ = 1 if 1 cup of bleach is added and $x_{i2}$ = 0 if no bleach is added.
+
+$x_{i3}$ = 1 if using fabric softener and $x_{i3}$ = 0 if no use of fabric softener.
+
+The variable $x_{i1}x_{i2}$ is the interaction between detergent and bleach, $x_{i1}x_{i3}$ is the interaction between detergent and fabric softener, $x_{i2}x_{i3}$ is the interaction between bleach and fabric softener, $x_{i1}x_{i2}x_{i3}$ is the interaction between detergent, bleach and fabric softener.
+
+### Figures and Graphs
+
+```{r}
+cube_plot <- cubePlot(linear_model,"Fabric_softener","Detergent","Bleach",
+                      main = "Cube plot of cleanliness score")
+```
+
+Figure 1: This is the cube plot for the main effects term. When we use the fabric softener and add 1/2 cup of detergent and 1 cup of bleach, the score of cleanliness is 9.5. When we use no fabric softener and add 1/4 cup of detergent and no bleach, the score of cleanliness is 2.
+
+```{r}
+#interaction plot of Detergent and Bleach
+interaction.plot(Detergent,Bleach,Score, type = "l", xlab = "Detergent", 
+                 trace.label = "Bleach", ylab = "Score",
+                 main = "Interaction plot of Detergent and Bleach")
+```
+
+Figure 2: This is the interaction plot for the detergent and bleach.
+
+```{r}
+#interaction plot of Detergent and Fabric softener
+interaction.plot(Detergent,Fabric_softener,Score, type = "l", xlab = "Detergent", 
+                 trace.label = "Fabric_softener", ylab = "Score",
+                 main ="Interaction plot of Detergent and Fabric softener")
+```
+
+Figure 3: This is the interaction plot for the detergent and fabric softener
+
+```{r}
+#interaction plot of Bleach and Fabric softener
+interaction.plot(Bleach,Fabric_softener,Score, type = "l", xlab = "Bleach", 
+                 trace.label = "Fabric_softener", ylab = "Score",
+                 main ="Interaction plot of Bleach and Fabric softener")
+```
+
+Figure 4: This is the interaction plot for the bleach and fabric softener
+
+
+## II.Numerical Summaries 
+
+### Main effects and interaction effects
+
+We have main effect terms of detergent, bleach and fabric softener and the interaction terms of Detergent:Bleach, Detergent:Fabric_softener, Bleach:Fabric_softener and Detergent:Bleach:Fabric_softener. The main effects and interaction effects are recorded in Table 3 by multiplying their regression coefficient by 2 since each factor has two levels. 
+
+Table 3: Factors and their effects
+
+$\begin{tabular}{|c|c|}
+    \hline
+    factor & effect \\
+    \hline
+    Detergent& 3.375 \\
+    \hline
+    Bleach & 3.625 \\
+    \hline
+    Fabric Softener &-0.125  \\
+    \hline
+    Detergent:Bleach & -0.125 \\
+    \hline
+    Detergent:Fabric softener & 0.125 \\
+    \hline
+    Bleach:Fabric softener & -0.125 \\
+    \hline
+    Detergent:Bleach:Fabric softener & 0.625 \\
+    \hline
+    \end{tabular}$
+
+### Caculation of Main effects by using Cube plot
+By plotting a cube plot, it helps us calculate the effects for each factor. The cube will produce 12 comparisons along the 12 edges of the cube. We will have 4 measures on the effect of detergent, 4 measures on the effect of bleach and 4 measures on the effect of fabric softener. Each edge of the cube indicates only one factor is changed and other two factors remain the same.
+
+Therefore, 
+the effect of Detergent is equal to $$\dfrac{(5.5+6+9+9.5)}4 - \dfrac{(2.5+2+5.5+6.5)}4 = 3.375$$
+
+the effect of Bleach is equal to $$\dfrac{(5.5+6.5+9+9.5)}4 - \dfrac{(2.5+2+5.5+6)}4 = 3.625$$
+
+the effect of Fabric Softener is equal to $$\dfrac{(2.5+5.5+5.5+9.5)}4 -\dfrac{(2+6.5+9+6)}4 = -0.125$$
+    ggplot(phase3_new_rate, aes(y =avg_rate , x = applicant_id,shape = gender, colour = Result)) + 
+geom_point(aes(group = interaction(gender,Result)), size = 3)
+
+
+ggplot(phase3_new_rate, aes(x = Result, fill = gender)) +
+  theme_minimal() +                                  
+  geom_bar(position = position_dodge(preserve = "single"))
+
+### Estimated Variance
+
+We create a table to show the difference in score between two rounds as shown in Table 4. 
+
+Table  4: Score for two rounds and their difference
+
+$\begin{tabular}{|c|c|c|}
+    \hline
+    Score of First Round (y1) & Score of Second Round (y2) & Difference (Di) \\
+    \hline
+    2 & 2 & 0 \\
+    \hline
+    3 & 2 & 1\\
+    \hline
+    7 & 6 & 1 \\
+    \hline
+    5 & 6 & -1 \\
+    \hline
+    6 & 6 & 0\\
+    \hline
+    6 & 5 & 1\\
+    \hline
+    9 & 9 & 0\\
+    \hline
+    10 & 9 & 1\\
+    \hline
+    \end{tabular}$
+    
+    
+    Table 1: Estimated coeffcient and 95% confidence 
+$\begin{tabular}{|c|c|c|}
+    \hline
+    Variables & Estimated coefficient & 95% CI \\
+    \hline
+    baseline odds(b0) & -19.90091 & (-2.761374e+01, -12.1880805) \\
+    \hline
+    x1 & -0.77031 & (-2.270682e+00, 0.7300574)\\
+    \hline
+    x2 & -16.61510 & (-4.015097e+03, 3981.8671827) \\
+    \hline
+    x3 &-0.52264& (-2.016804e+00, 0.9715275) \\
+    \hline
+    x4 & -0.35768 & (-1.755065e+00, 1.0397073)\\
+    \hline
+    x5 & 0.01173 & (-1.507837e+00, 1.5313010)\\
+    \hline
+    x6 & 0.09402 & (4.541985e-02, 0.1426114) \\
+    \hline
+    x7 & 0.10349 & (5.154750e-02, 0.1554407) \\
+    \hline
+    x8 & 0.97439 & (5.438201e-01, 1.4049595)\\
+    \hline
+    x9 & 0.76314 & (4.092769e-01, 1.1169932)\\
+    \hline
+    \end{tabular}$
+    
+    
+ $\begin{tabular}{|c|c|c|}
+    \hline
+    Variables & Estimated coefficient & 95% CI \\
+    \hline
+    baseline odds(b0) & -6.40374 & (-7.4597669, -5.3477224) \\
+    \hline
+    x1 & 1.97580 & (1.5618904, 2.3897057)\\
+    \hline
+    x2 & -0.57889 & (-2.1396362, 0.9818577) \\
+    \hline
+    x3 & -0.0645 & (-0.4644362, 0.3352827) \\
+    \hline
+    x4 & 0.26442 & (-0.1208189, 0.6496537)\\
+    \hline
+    x5 & 0.75728 & (0.2526958, 1.2618562)\\
+    \hline
+    \end{tabular}$
+
+
+The estimated variance at each set of conditions could be expressed as:
+
+$$si^2 = \dfrac{[y1-y2]^2}2 = \dfrac{[Di]^2}2$$
+
+Thus a pooled estimate of error variance could be obtained by 
+
+$$s^2 = \dfrac{\sum{si^2}}8 = \dfrac{0+0.5+0.5+0.5+0+0.5+0+0.5}8 = 0.3125 $$ 
+
+and the estimated variance of an effect is 
+
+$$Var(effect) = (\dfrac{1}8 +\dfrac{1}8)s^2 = 0.078125$$
+The standard error of any factorial effect is:
+
+$$se(effect) = \sqrt{0.078125} = 0.2795085$$
+\newpage
+
+# Interpretation
+
+### Interpreation of the main effects and interaction effects
+By interpreting the results we have obtained from the model, the cleanliness of the clothes will increase by 3.375 when we add ½ cup of detergent. Since the p-value for the estimated coefficient of detergent is less than a significant level of 0.05, then we will reject our null hypothesis that there is no difference in the ability of removing oil and grape stains on clothes by adding ½ cup of detergent and ¼ cup of detergent. Therefore, adding  ½ cup of detergent is more effective than ¼ cup of detergent in removing the stains on dirty clothes. 
+
+Similarly, when we add the bleach, it positively influences the cleanliness of the clothes with an increase of 3.625. The p-value for the estimated coefficient of bleach is less than 0.05, we will reject our null hypothesis that there is no difference in the ability of removing oil and grape stains on clothes by not adding bleach and adding 1 cup of bleach. Thus, we have enough evidence to show that adding bleach will be effective in cleaning the stains and this means bleach positively affects the ability of the laundry machine in removing stains. 
+
+Conversely, when we add the fabric softener, the cleanliness of the clothes decreases by a level of 0.125.However, the p-value for the estimated coefficient of fabric softener is 0.6666 which is larger than a significant level of 0.05. This illustrates that we have no evidence to reject the null hypothesis that the ability to remove oil and grape stains by not using fabric softener and using fabric softener is the same. A large p-value indicates fabric softener does not actually affect the cleanliness of the clothes. Therefore, adding or not adding the fabric softener is the same and it will not affect the ability of the washing machine to remove the oil and graph stains. 
+
+### More interpretation on the interaction plots and interaction effects
+The interaction plots for detergent, bleach and fabric softener demonstrate there are no interactions between these three factors. In the first interaction plot, the lines of detergent and bleach are almost parallel to each other and there is no intersection between two lines. This indicates there is no relationship between detergent and bleach. However, in the other two interaction plots, the lines of the factors seem to intersect and the plot could not clearly demonstrate the interaction of the two factors. Therefore, we still need the p-value for the interaction effects to investigate whether there is an interaction. 
+
+The p-value for interaction effects are larger than a significant level of 0.05, then we have no evidence to show there is an interaction among detergent and bleach, detergent and fabric softener or bleach and fabric softener. Thus, this indicates detergent, bleach and fabric softener are independent among each other. 
+
+### Interpretation of the estimated variance
+
+In a $2^3$ times factorial experiment, the standard error could not be easily explained by the chance alone and we could use the standard error to estimate its 95% confidence interval.
+
+Since the observations are normally distributed and they are independent from each other, we can have:
+
+$$effect/se(effect)~t8$$
+
+Therefore, the 95% confidence interval could be obtained by
+
+$$effect{\pm}t_{8,.05/2}sese(effect)$$
+Thus,a factorial effect has the 95% confidence interval of 
+
+$$effect{\pm}2.3*0.2795085= effect{\pm}0.64$$
+Then the upper bound for the factorial effect of detergent is $3.375 + 0.64 = 4.018$ and the lower bound for the factorial effect of detergent is $3.375 - 0.64 = 2.73$
+
+The upper bound for the factorial effect of bleach is $3.625 + 0.64 = 4.265$ and the lower bound for the factorial effect of bleach is $3.625 - 0.64 = 2.985$
+
+The upper bound for the factorial effect of fabric softener is $-0.125 + 0.64 = 0.515$ and the lower bound for the factorial effect of fabric softener is $-0.125 - 0.64 = -0.765$
+
+### Interpretation of Confidence interval
+
+```{r}
+#Confidence interval
+2*confint.lm(linear_model)
+```
+
+Additionally, we can also calculate the 95% confidence interval for the true values of effects by using R.Since the 95% confidence interval does not contain zero for the main effects of detergent and bleach, this indicates adding detergent and bleach will affect the cleanliness of the clothes and thus it could reflect the cleaning ability of the laundry machine to remove the oil and grape stains on clothes. However, the 95% confidence interval contains zero for fabric softener and this means fabric softener will not contribute to the cleanliness of the clothes. Thus, detergent, bleach could increase the cleaning ability of the laundry machine while fabric softener could not. Furthermore, the confidence intervals contain zero for all the interaction effects (Detergent:Bleach, Detergent:Fabric_softener, Bleach:Fabric_softener and Detergent:Bleach:Fabric_softener), it indicates there is no interaction between detergent, bleach and fabric softener and all three factors independent effects.
+
+# PART 3 --- Conclusion
+
+This 2^3 factorial experiment aims to examine the efficiency of the detergent, bleach and fabric softener in removing the oil and grape stains. After conducting this experiment, I found detergent and bleach positively influence the ability of the washing machine to remove the oil and grape stains on the clothes since their estimated coefficients have small p-values. The cleanliness of the clothes will significantly increase after adding the sufficient detergent and bleach during the washing process. Specifically, detergent and bleach will increase the cleanliness of clothes by a level of 3.375 and 3.625 respectively. However, the fabric softener rarely contributes to the cleanliness of the clothes and it does not affect the ability of the laundry machine to remove the stains. This indicates fabric softener is useless in removing the oil and grape stains on clothes and we could choose not to add the fabric softener into the laundry machine for the next time if we aim to remove the oil and grape stains. 
+
+The 95% confidence interval also confirms our conclusion that the factors that will influence the cleaning ability of washing machines are detergent and bleach, but not fabric softener. Additionally, there is no interaction between detergent, bleach and fabric softener and all three factors independent effects. Next time, if I want to efficiently clean my clothes with oil or grape stains, I will add ½ cup of detergent, 1 cup of bleach and no fabric softener into the washing machine. This is the most optimal and effective amount of detergent, bleach and fabric softener to remove the oil and grape stains on clothes.
+
+# PART 4 --- Disccusion and Limitation 
+
+This experiment is a time-consuming process since we washed 16 pieces of clothes for 16 times and it also wastes plenty of water and electricity. It is unavoidable that this experiment will still consume plenty of water and electricity for the next time, but we could improve this by turning on the water and energy efficient modes on the washing machine. Additionally, the experiment needs 16 same pieces of clothes with exactly the same amount of oil and grape stains on them. Although we tried our best to control the amount of oil and grape stains, it is difficult to make sure every piece of fabric has exactly identical areas of stains. Therefore, it may lead to inaccurate recorded scores of cleanliness. We only replicate this experiment twice and thus the experiment may still produce some inaccurate measurement. If we want to obtain more reliable results,  we could replicate this experiment multiple times and record data for each run. 
+
+Moreover, we have invited 16 participants to give the score on the cleanliness of the clothes since we needed to make sure that every y is independent from each other. The score will be biased since the score strongly relies on different participants’ opinions and thus the score may be inaccurate. For instance, when the participants gave a score on the cleanliness of the cloth, one participant may believe this piece of clothes has a cleanliness score of 7 while the other participant may think it has a score of 8. Therefore, the biased score may lead to inaccurate results or even incorrect conclusions. We could improve this by using a microscope instead of people to examine the stains on the washed clothes and record the cleanliness score.
+
+\newpage
+
+# Appendix
+
+```{r,echo=TRUE}
+exp(0.08620)
+exp (0.92488)-1
+#import the data 
+Detergent = c(-1,-1,-1,-1,1,1,1,1,-1,-1,-1,-1,1,1,1,1)
+Bleach = c(-1,-1,1,1,-1,-1,1,1,-1,-1,1,1,-1,-1,1,1)
+Fabric_softener = c(-1,1,-1,1,-1,1,-1,1,-1,1,-1,1,-1,1,-1,1)
+Score = c(2,3,7,5,6,6,9,10,2,2,6,6,6,5,9,9)
+#create a linear model
+linear_model<-lm(Score ~ Detergent*Bleach*Fabric_softener)
+summary(linear_model)
+
+#Cube plot
+cube_plot <- cubePlot(linear_model,"Fabric_softener","Detergent","Bleach",
+                      main = "Cube plot of cleanliness score")
+
+#interaction plot of Detergent and Bleach
+interaction.plot(Detergent,Bleach,Score, type = "l", xlab = "Detergent", 
+                 trace.label = "Bleach", ylab = "Score",
+                 main = "Interaction plot of Detergent and Bleach")
+#interaction plot of Detergent and Fabric softener
+interaction.plot(Detergent,Fabric_softener,Score, type = "l", xlab = "Detergent", 
+                 trace.label = "Fabric_softener", ylab = "Score",
+                 main ="Interaction plot of Detergent and Fabric softener")
+#interaction plot of Bleach and Fabric softener
+interaction.plot(Bleach,Fabric_softener,Score, type = "l", xlab = "Bleach", 
+                 trace.label = "Fabric_softener", ylab = "Score",
+                 main ="Interaction plot of Bleach and Fabric softener")
+#Confidence interval
+2*confint.lm(linear_model)
+ exp(0.09647)
+ exp(0.75952)-1
+```
