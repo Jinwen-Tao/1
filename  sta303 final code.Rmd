@@ -1,0 +1,282 @@
+---
+title: "sta303 final"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(ggplot2)
+#install.packages("reshape")
+library(reshape)
+library(lattice)
+#install.packages("corrplot")
+#install.packages("DataExplorer")
+library(DataExplorer)
+library(corrplot)
+#install.packages("Hmisc")
+library(Hmisc)
+```
+
+```{r}
+black_saber_current_employees <- read_csv("Desktop/STA303 FINAL/data/black-saber-current-employees.csv")
+final_hires <- read_csv("Desktop/STA303 FINAL/data/final-hires-newgrad_2020.csv")
+phase1_new <- read_csv("Desktop/STA303 FINAL/data/phase1-new-grad-applicants-2020.csv")
+phase2_new <- read_csv("Desktop/STA303 FINAL/data/phase2-new-grad-applicants-2020.csv")
+phase3_new <- read_csv("Desktop/STA303 FINAL/data/phase3-new-grad-applicants-2020.csv")
+```
+```{r}
+#aggregate datasets from all phases:
+phase3_new <- inner_join(phase2_new,phase3_new,by="applicant_id")
+phase3_new
+final_hires <- inner_join(phase3_new,final_hires,by="applicant_id")
+
+phase1_new1 <- left_join(phase1_new, phase2_new)
+all_phase <- left_join(phase1_new1,phase3_new)
+```
+
+```{r}
+#Add a new Status
+all_phase$Status<-ifelse(all_phase$applicant_id %in% final_hires$applicant_id,
+                         "Hired",
+                         ifelse(
+                           all_phase$applicant_id %in% phase3_new$applicant_id,
+                                "Rejected at Phase 3", 
+                           ifelse(
+                             all_phase$applicant_id %in% phase2_new$applicant_id,
+                             "Rejected at Phase 2","Rejected at Phase 1")))
+#change rating data to factor with multiple level:
+all_phase <- as.data.frame(unclass(all_phase))
+all_phase$applicant_id <- as.character(all_phase$applicant_id)
+```
+
+```{r}
+# Graph
+#gender distribution on Status:
+ggplot(data=all_phase,aes(x=Status,fill=gender))+geom_bar(position="fill")+ylab("Percentage")
+#gender distribution on leadership_presence:
+ggplot(data=all_phase,aes(x=leadership_presence,fill=gender))+geom_bar(position="fill")+ylab("Percentage")
+#gender distribution on speaking_skills:
+ggplot(data=all_phase,aes(x=speaking_skills,fill=gender))+geom_bar(position="fill")+ylab("Percentage")
+#gender distribution on writing_skills:
+ggplot(data=all_phase,mapping=aes(x=writing_skills,color=gender))+geom_freqpoly(binwidth=10)
+#gender distribution on technical_skills:
+ggplot(data=all_phase,mapping=aes(x=technical_skills,color=gender))+geom_freqpoly(binwidth=10)
+#gender distribution on technical_skills:
+ggplot(data=all_phase,mapping=aes(x=interviewer_rating_1,y=interviewer_rating_2,color=gender))+geom_point()
+
+```
+
+```{r}
+# result
+phase1_new$Result=ifelse(phase1_new$applicant_id %in% phase2_new$applicant_id, "Proceed", "NO")
+phase2_new$Result=ifelse(phase2_new$applicant_id %in% phase3_new$applicant_id, "Proceed", "NO")
+phase3_new$Result=ifelse(phase3_new$applicant_id %in% final_hires$applicant_id, "Proceed", "NO")
+
+all_phase$Result=ifelse(all_phase$applicant_id %in% final_hires$applicant_id, "Hire", "NO")
+```
+
+```{r}
+library("lme4")
+#Phase 1
+phase1_new <- as.data.frame(unclass(phase1_new))
+mod_1 <- glm(as.factor(Result) ~ gpa + gender+ extracurriculars +
+               work_experience,data = phase1_new,family = binomial)
+summary(mod_1)
+round(summary(mod_1)$coef,digits=2)
+
+#Phase2
+phase2_new <- as.data.frame(unclass(phase2_new))
+mod_2 <- glm(as.factor(Result) ~ gpa + gender+ extracurriculars +
+                 technical_skills + writing_skills + leadership_presence +
+                 speaking_skills + work_experience, 
+               data = phase2_new,
+               family = binomial)
+summary(mod_2)
+round(summary(mod_2)$coef,digits=4)
+
+#Phase3
+phase3_new <- as.data.frame(unclass(phase3_new))
+mod_3 <- glm(as.factor(Result) ~ gpa + gender+ extracurriculars +
+                 technical_skills + writing_skills + leadership_presence +
+                 speaking_skills + work_experience+
+                 interviewer_rating_1+
+                 interviewer_rating_2, 
+               family = binomial, 
+               data = phase3_new)
+summary(mod_3)
+```
+
+```{r}
+current_employee <- black_saber_current_employees
+summary(current_employee)
+current_employee$employee_id <- as.character(current_employee$employee_id)
+current_employee$gender <- as.factor(current_employee$gender)
+current_employee$team <- as.factor(current_employee$team)
+current_employee$role_seniority <- as.factor(current_employee$role_seniority)
+current_employee$leadership_for_level <- as.factor(current_employee$leadership_for_level)
+
+current_employee$salary <- gsub("\\$","", current_employee$salary)
+current_employee$salary <- gsub("\\,","", current_employee$salary)
+current_employee$salary <- as.numeric(current_employee$salary)
+summary(current_employee)
+
+# basic plot
+plot_missing(current_employee)
+plot_bar(current_employee)
+plot_histogram(current_employee)
+
+# correlation
+cor(current_employee$productivity, current_employee$salary)
+
+# EDA
+# Boxplot on productivity grouped by gender
+plot_boxplot(current_employee, by="gender", geom_boxplot_args=list("outlier.color"="red"))
+```
+
+
+```{r}
+#scatterplot
+ggplot(data = current_employee, aes(x= productivity, y =salary, colour = gender))+geom_point()
+#leadership for the level on gender
+ggplot(current_employee, aes(leadership_for_level, ..count..))+geom_bar(aes(fill = gender),position = "fill")
+#role senority for the level on gender
+ggplot(current_employee, aes(role_seniority, ..count..))+ geom_bar(aes(fill = gender),position = "fill")
+```
+```{r}
+#create subset for # of promotion:
+view(num_promoted)
+num_promoted <- current_employee %>% select(employee_id,role_seniority)
+wip1 <- num_promoted %>% 
+  group_by(employee_id) %>% count(role_seniority) %>%
+  pivot_wider(names_from = role_seniority, values_from = n) 
+wip1$na_count <- apply(wip1, 1, function(x) sum(is.na(x)))
+wip1$num_promoted <- 9 - wip1$na_count
+promoted <- wip1[,c(1,12)] 
+
+```
+
+```{r}
+library(nlme)
+mod_current <- gls(salary ~gender+team+role_seniority+leadership_for_level+productivity, data = current_employee, method="ML")
+mod_current
+```
+```{r}
+# fixed effects and random effects
+lme1 <- lme(salary~gender+team+role_seniority+leadership_for_level+productivity, data= current_employee, random= ~1|employee_id, method="ML")
+lme2 <- lme(salary~gender+team+role_seniority+leadership_for_level+productivity, data= current_employee, random= ~1|financial_q, method="ML")
+lme3 <- lme(salary~gender+team+role_seniority+leadership_for_level+productivity, data= current_employee, random= ~1|role_seniority, method="ML")
+lme4 <- lme(salary~gender+team+role_seniority+leadership_for_level+productivity, data= current_employee, random= ~1|leadership_for_level, method="ML")
+```
+
+```{r}
+#average productivity for every employee:
+avg_prod <- current_employee %>% group_by(employee_id) %>% summarise(mean(productivity))
+
+#calculate salary increase for every employee:
+wip2<- current_employee %>% group_by(employee_id) %>% summarise(max(salary))
+wip3 <- current_employee %>% group_by(employee_id) %>% summarise(min(salary))
+salary_inc <- inner_join(wip2,wip3,mby="employee_id")
+salary_inc$raise <- salary_inc$`max(salary)`-salary_inc$`min(salary)`
+
+#Re-join all new features with unique employee ID: 
+all_employee <- inner_join(avg_prod,promoted,by="employee_id")
+all_employee <- inner_join(all_employee,salary_inc,by="employee_id")
+all_employee <- all_employee[,c(1,2,3,6)]
+all_employee$salary_raise <- all_employee$raise
+all_employee$avg_productivity <- all_employee$`mean(productivity)`
+all_employee <- all_employee[,c(1,3,5,6)]
+
+other_subset <- current_employee[,c(1:3, 6)]
+leadership <- other_subset %>% 
+  group_by(employee_id) %>% count(leadership_for_level) %>%
+  pivot_wider(names_from = leadership_for_level, values_from = n) 
+leadership[is.na(leadership)] <- 0
+
+other_subset <- other_subset[,c(1:3)]
+other_subset <- distinct(other_subset)
+
+new_dat <- inner_join(all_employee, leadership, by="employee_id")
+new_dat <- inner_join(new_dat, other_subset, by="employee_id")
+
+#change variable data types:
+new_dat$gender <- as.factor(new_dat$gender)
+new_dat$team <- as.factor(new_dat$team)
+
+new_dat$leadership_appropriate <- new_dat$`Appropriate for level`
+new_dat$leadership_needsimprov <- new_dat$`Needs improvement`
+new_dat$leadership_exceeds <- new_dat$`Exceeds expectations`
+new_dat <- new_dat[,-c(5:7)]
+
+str(new_dat)
+
+#Fit model:
+#fixed effects & random effects:
+#salary_raise as outcome variable
+LMM1 <- lme(salary_raise ~gender+team+avg_productivity,data=new_dat,random = ~1|employee_id, method = "ML")
+LMM2<-lme(salary_raise ~gender+team+avg_productivity+leadership_exceeds,data=new_dat,random = ~1|employee_id, method = "ML")
+#number of promotions as outcome variable:
+LMM3 <- lme(num_promoted ~gender+team+avg_productivity,data=new_dat,random = ~1|employee_id, method = "ML")
+LMM4 <- lme(num_promoted ~gender+team+avg_productivity+leadership_exceeds,data=new_dat,random = ~1|employee_id, method = "ML")
+
+
+
+#OLD CODES FROM LAST TIME:------------------------------
+#basic plot:
+plot_missing(new_dat)
+plot_bar(new_dat)
+plot_histogram(new_dat)
+
+#EDA:
+#boxplot on productivity grouped by gender:
+plot_boxplot(current_employee, by = "gender", geom_boxplot_args = list("outlier.color" = "red"))
+
+#scatterplot:
+ggplot(data = current_employee, aes(x = productivity,y=salary, colour = gender)) +
+  geom_point()
+
+#leadership for level on gender:
+ggplot(current_employee, aes(leadership_for_level, ..count..)) + geom_bar(aes(fill = gender), position = "fill")
+
+#role senority on gender:
+ggplot(current_employee, aes(role_seniority, ..count..)) + geom_bar(aes(fill = gender), position = "fill")
+
+
+#fit model on original dataset:
+mod_current <- gls(salary ~gender+team+role_seniority+leadership_for_level+productivity,data=current_employee,method = "ML")
+summary(mod_current)
+
+mod_lg <- glm(salary ~gender+team+role_seniority+leadership_for_level+productivity,data=current_employee)
+summary(mod_lg)
+
+
+#fixed effects & random effects:
+lmm1 <- lme(salary ~gender+team+role_seniority+leadership_for_level+productivity,data=current_employee,
+            random = ~1|employee_id, method = "ML")
+lmm2 <- lme(salary ~gender+team+role_seniority+leadership_for_level+productivity,data=current_employee,
+            random = ~1|financial_q, method = "ML")
+lmm3 <- lme(salary ~gender+team+role_seniority+leadership_for_level+productivity,data=current_employee,
+            random = ~1|role_seniority, method = "ML")
+lmm4 <- lme(salary ~gender+team+role_seniority+leadership_for_level+productivity,data=current_employee,
+            random = ~1|leadership_for_level, method = "ML")
+
+#compare between models:
+anova(mod_current, lmm1, lmm2, lmm3, lmm4)
+
+# QQ plots (drawn to the same scale!)
+par(mfrow = c(1,2))
+lims <- c(-3.5,3.5)
+qqnorm(resid(mod_current, type = "normalized"),
+       xlim = lims, ylim = lims,main = "GLM base")
+abline(0,1, col = "red", lty = 2)
+qqnorm(resid(lmm4, type = "normalized"),
+       xlim = lims, ylim = lims, main = "lmm4")
+abline(0,1, col = "red", lty = 2)
+
+summary(lmm4)
+lmm4$coefficients
+
+```
+
